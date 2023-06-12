@@ -58,7 +58,10 @@ const userLoginController = async (req, res) => {
             });
             res.cookie("jwt", token, {
                 expires: new Date(Date.now() + 60000000),
-                httpOnly: false,
+                httpOnly: true,
+                secure : true,
+                sameSite : "none",
+                domain : "https://coding-ninja.onrender.com"
             })
             res.status(200).json({
                 error: false,
