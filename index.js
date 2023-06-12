@@ -14,7 +14,7 @@ const auth = require('./middleware/auth');
 const app = express();
 
 app.use(cors({
-    origin: `*`,
+    origin: `https://coding-ninja.onrender.com`,
     credentials: true
 }))
 app.use(cookieParser())
