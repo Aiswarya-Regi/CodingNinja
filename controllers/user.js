@@ -18,7 +18,16 @@ const userRegisterController = (req, res) => {
             name,
             email,
             password: hash,
-            courses : []
+            courses : [],
+            address1 : "" ,
+            pin: "" ,
+            state: "",
+            city: "" ,
+            country: "",
+            year: "" ,
+            college: "",
+            degree: "" ,
+            saved : "False"
         })
 
         registerDetails.save().then(re => {
@@ -35,12 +44,12 @@ const userRegisterController = (req, res) => {
     })
 }
 
-
 const userLoginController = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
         const data = await User.findOne({ email });
+        console.log(data)
 
         const err = await bcrypt.compare(password, data.password);
         if (!err) {
@@ -50,7 +59,8 @@ const userLoginController = async (req, res) => {
                 message: "Invalid details",
                 username: "",
                 email : "",
-                courses : []
+                courses : [],
+                saved : "False"
             });
         } else {
             const token = await jwt.sign({ _id: data._id }, config.SECRET_KEY, {
@@ -69,7 +79,9 @@ const userLoginController = async (req, res) => {
                 username: data.name,
                 email : data.email,
                 courses : data.courses,
+                saved : data?.saved || "False",
                 message: "Valid details"
+    
             })
         }
     } catch (err) {
@@ -79,7 +91,8 @@ const userLoginController = async (req, res) => {
             message: err,
             username: "",
             email : "",
-            courses : []
+            courses : [],
+            saved : "False"
         });
     }
 
@@ -112,6 +125,48 @@ console.log(existingList)
 }
 }
 
+const saveUserDetailsController = async (req, res) => {
+    try{
+        const email = req.body.email;
+        const address1 = req.body.address1;
+        const pin = req.body.pin;
+        const state = req.body.state;
+        const city = req.body.city;
+        const country = req.body.country;
+        const year = req.body.year;
+        const college = req.body.college;
+        const degree = req.body.degree;
+        console.log("degree",email)
+        
+ const obj = {
+    address1 : address1 ,
+    pin : pin ,
+    state : state,
+    city : city ,
+    country : country,
+    year : year ,
+    college : college,
+    degree : degree ,
+    saved : "True"
+  }
+  const data = await User.findOne({ email });
+  console.log("data",data)
+      const result = await  User.updateMany({email},{$set : obj })
+      console.log("obj",obj)
+      res.status(200).json({
+        error : false,
+        message : "success",
+        saved : "True"
+      })
+    }catch(err){
+        res.status(401).json({
+            error : true,
+            message : "failure",
+            saved : "False"
+          })
+    }
+}
+
 const userLogoutController = (req, res) => {
     try {
         res.clearCookie("jwt");
@@ -138,6 +193,7 @@ module.exports = {
     userRegisterController,
     userLogoutController,
     initialLoader,
-    updateUserController
+    updateUserController,
+    saveUserDetailsController
 
 }

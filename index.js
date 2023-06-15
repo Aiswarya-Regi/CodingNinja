@@ -31,7 +31,8 @@ app.get("/api/getCookie", auth, (req, res) => {
         jwt: req.cookies.jwt || "",
         username: req?.user?.name || "",
         email: req?.user?.email || "",
-        courses: req?.user?.courses || []
+        courses: req?.user?.courses || [],
+        saved: req?.user?.saved || "False"
     })
 })
 app.use(express.static("client/build"));

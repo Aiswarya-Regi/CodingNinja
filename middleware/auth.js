@@ -17,7 +17,8 @@ const auth = async (req, res, next) => {
             error: true,
             message: err,
             jwt : "",
-            username : ""
+            username : "",
+            saved : "False"
         })
     }
 }
