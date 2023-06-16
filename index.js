@@ -15,6 +15,7 @@ const app = express();
 
 app.use(cors({
     origin: `https://codingninja-739e.onrender.com`,
+    // origin: `http://localhost:3000`,
     credentials: true
 }))
 app.use(cookieParser())
@@ -41,7 +42,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(config.PORT, () => {
-    MongoClient.connect("mongodb+srv://Aishwarya:Aishwarya@cluster0.n2jwfug.mongodb.net/?retryWrites=true&w=majority").then(res => {
+    MongoClient.connect("mongodb+srv://Aishwarya:Aishwarya@cluster0.tvuijox.mongodb.net/?retryWrites=true&w=majority").then(res => {
         console.log("connected to Mongo DB")
     }).catch(err => console.log("err"))
     console.log(`server running at port ${config.PORT}`)

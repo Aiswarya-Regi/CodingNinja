@@ -4,6 +4,7 @@ const config = require('../config/config');
 
 
 const User = require("../models/user");
+const Callback = require('../models/callback');
 
 const userRegisterController = (req, res) => {
 
@@ -187,6 +188,38 @@ const initialLoader = (req, res) => {
     console.log(req.cookies.jwt)
 }
 
+const callbackController = (req,res) =>{
+    try{
+    const name = req.body.name;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const year = req.body.year;
+    const callbackDetails = new Callback({
+        name,
+        email,
+        phone,
+        year
+    })
+
+    callbackDetails.save().then(re => {
+        res.status(200).json({
+            error: false,
+            message: "success"
+        })
+    }).catch(err => {
+        res.status(401).json({
+            error: true,
+            message: err
+        })
+    })
+}catch(err){
+    res.status(401).json({
+        error: true,
+        message: err
+    })
+}
+}
+
 
 module.exports = {
     userLoginController,
@@ -194,6 +227,7 @@ module.exports = {
     userLogoutController,
     initialLoader,
     updateUserController,
-    saveUserDetailsController
+    saveUserDetailsController,
+    callbackController
 
 }
